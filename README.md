@@ -27,7 +27,7 @@ The code reads the dataset from an Excel file and prepares the user-item matrix
 
 ### User-User Collaborative Filtering
 Calculate user similarity and make predictions:
-```bash
+``` python
 user_similarity = pairwise_distances(train_matrix, metric='cosine')
 
 def predict_user_user(train_matrix, user_similarity, n_similar=100):
@@ -46,7 +46,7 @@ predictions = predict_user_user(train_matrix, user_similarity, 100) + train_matr
 ### Item-Item Collaborative Filtering
 Calculate item similarity and make predictions:
 
-``` bash
+``` python
 item_similarity = pairwise_distances(train_matrix.T, metric='cosine')
 
 def predict_item_item(train_matrix, item_similarity, n_similar=100):
@@ -62,6 +62,21 @@ def predict_item_item(train_matrix, item_similarity, n_similar=100):
 
 predictions = predict_item_item(train_matrix, item_similarity, 100)
 
+```
+
+### Model-Based Collaborative Filtering
+Implement model-based collaborative filtering using matrix factorization:
+
+``` python
+from sklearn.decomposition import TruncatedSVD
+
+def model_based_collaborative_filtering(train_matrix, n_components=20):
+    svd = TruncatedSVD(n_components=n_components, random_state=42)
+    latent_matrix = svd.fit_transform(train_matrix)
+    reconstructed_matrix = svd.inverse_transform(latent_matrix)
+    return reconstructed_matrix
+
+predictions = model_based_collaborative_filtering(train_matrix)
 ```
 
 ## Motivation
